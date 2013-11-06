@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" targetNamespace="http://www.ans.gov.br/padroes/tiss/schemas" elementFormDefault="qualified">
+	<!--VERSÃO TISS 3.00.01 - Mensagens do Padrão TISS-->
+	<include schemaLocation="tissAssinaturaDigital_v1.01.xsd"/>
+	<include schemaLocation="tissSimpleTypesV3_00_01.xsd"/>
+	<include schemaLocation="tissComplexTypesV3_00_01.xsd"/>
+	<include schemaLocation="tissGuiasV3_00_01.xsd"/>
+	<!-- Estrutura da mensagem do TISS -->
+	<element name="mensagemTISS">
+		<complexType>
+			<sequence>
+				<element name="cabecalho" type="ans:cabecalhoTransacao"/>
+				<choice>
+					<element name="operadoraParaPrestador" type="ans:operadoraPrestador" minOccurs="0"/>
+					<element name="prestadorParaOperadora" type="ans:prestadorOperadora" minOccurs="0"/>
+				</choice>
+				<element name="epilogo" type="ans:epilogo"/>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- Definicao do cabecalho das mensagens -->
+	<complexType name="cabecalhoTransacao">
+		<sequence>
+			<element name="identificacaoTransacao">
+				<complexType>
+					<sequence>
+						<element name="tipoTransacao" type="ans:dm_tipoTransacao"/>
+						<element name="sequencialTransacao" type="ans:st_texto12"/>
+						<element name="dataRegistroTransacao" type="ans:st_data"/>
+						<element name="horaRegistroTransacao" type="ans:st_hora"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="falhaNegocio" type="ans:dm_tipoGlosa" minOccurs="0"/>
+			<element name="origem">
+				<complexType>
+					<choice>
+						<!-- origem de mensagens de prestadoreas para as operadoras -->
+						<element name="identificacaoPrestador">
+							<complexType>
+								<complexContent>
+									<extension base="ans:ct_prestadorIdentificacao"/>
+								</complexContent>
+							</complexType>
+						</element>
+						<!-- origem de mensagens de operadoras para os prestadores -->
+						<element name="registroANS" type="ans:st_registroANS"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="destino">
+				<complexType>
+					<choice>
+						<!--  destino de mensagens de operadoras para prestadores: informar código prestador na operadora -->
+						<element name="identificacaoPrestador" type="ans:ct_prestadorIdentificacao"/>
+						<!-- destino de mensagens de prestadores para as operadoras: informar registro ANS da operadora -->
+						<element name="registroANS" type="ans:st_registroANS"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="versaoPadrao" type="ans:dm_versao"/>
+			<element name="assinaturaDigital" type="ans:assinaturaDigital" minOccurs="0"/>
+			<element name="loginSenhaPrestador" type="ans:ct_loginSenha" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<!-- ************************************************ Mensagens da OPERADORA para o PRESTADOR ************** -->
+	<complexType name="operadoraPrestador">
+		<choice>
+			<element name="recebimentoLote" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="protocoloRecebimento" type="ans:ct_protocoloRecebimento"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="recebimentoAnexo" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="protocoloRecebimento" type="ans:ct_anexoRecebimento"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="recebimentoRecursoGlosa" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="protocoloRecebimento" type="ans:ct_recursoGlosaRecebimento"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="demonstrativosRetorno" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="demonstrativoAnaliseConta" type="ans:ctm_demonstrativoAnaliseConta" maxOccurs="unbounded"/>
+						<element name="demonstrativoPagamento" type="ans:ctm_demonstrativoPagamento" maxOccurs="unbounded"/>
+						<element name="demonstrativoPagamentoOdonto" type="ans:cto_demonstrativoOdontologia" maxOccurs="unbounded"/>
+						<element name="situacaoDemonstrativo">
+							<complexType>
+								<sequence>
+									<element name="identificacaoOperadora" type="ans:st_registroANS"/>
+									<element name="dadosPrestador" type="ans:ct_contratadoDados"/>
+									<choice>
+										<element name="periodo">
+											<complexType>
+												<sequence>
+													<element name="dataInicial" type="ans:st_data"/>
+													<element name="dataFinal" type="ans:st_data"/>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="numeroProtocolo" type="ans:st_texto12"/>
+									</choice>
+									<element name="protocoloSolicitacaoDemonstrativo" type="ans:st_texto12"/>
+									<element name="tipoDemonstrativo" type="ans:dm_tipoDemonstrativo"/>
+									<element name="dataSituacaoDemonstrativo" type="ans:st_data"/>
+									<element name="situacaoDemonstrativo" type="ans:dm_statusSolicitacao"/>
+								</sequence>
+							</complexType>
+						</element>
+					</choice>
+				</complexType>
+			</element>
+			<element name="situacaoProtocolo" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="situacaoProtocolo" type="ans:ct_protocoloStatus"/>
+						<element name="situacaoProtocoloAnexo" type="ans:ct_protocoloAnexoStatus"/>
+					</choice>
+				</complexType>
+			</element>
+			<!-- Estrutura para responder a solicitação de procedimento (ctm_solicitcaoLote) -->
+			<element name="autorizacaoServicos" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="autorizacaoInternacao" type="ans:ctm_autorizacaoInternacao"/>
+						<element name="autorizacaoServico" type="ans:ctm_autorizacaoServico"/>
+						<element name="autorizacaoServicoOdonto" type="ans:cto_autorizacaoServico"/>
+						<element name="autorizacaoProrrogacao" type="ans:ctm_autorizacaoProrrogacao"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="situacaoAutorizacao" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="autorizacaoServico" type="ans:ctm_autorizacaoServico" maxOccurs="unbounded"/>
+						<element name="autorizacaoProrrogacao">
+							<complexType>
+								<sequence>
+									<element name="autorizaServico" type="ans:ctm_autorizacaoServico" maxOccurs="unbounded"/>
+									<element name="tipoAcomodacaoAutorizada" type="ans:dm_tipoAcomodacao" minOccurs="0"/>
+									<element name="quantidadeAutorizada" type="ans:st_numerico2" minOccurs="0"/>
+									<element name="motivoNegativa" type="ans:ct_motivoGlosa" minOccurs="0"/>
+								</sequence>
+							</complexType>
+						</element>
+						<element name="autorizacaoOdonto" type="ans:cto_autorizacaoServico" maxOccurs="unbounded"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="respostaElegibilidade" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="reciboElegibilidade" type="ans:ct_elegibilidadeRecibo"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="reciboCancelaGuia" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="reciboCancelaGuia" type="ans:ct_guiaCancelamentoRecibo"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="reciboComunicacao" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="reciboComunicacaoDetalhe" type="ans:ctm_beneficiarioComunicacaoRecibo"/>
+					</choice>
+				</complexType>
+			</element>
+			<element name="respostaRecursoGlosa" minOccurs="0">
+				<complexType>
+					<choice>
+						<element name="mensagemErro" type="ans:ct_motivoGlosa"/>
+						<element name="recursoGlosa" type="ans:ct_respostaGlosa"/>
+					</choice>
+				</complexType>
+			</element>
+		</choice>
+	</complexType>
+	<!-- ************************************************ Mensagens da PRESTADOR para a OPERADORA ************** -->
+	<complexType name="prestadorOperadora">
+		<choice>
+			<element name="loteGuias" type="ans:ctm_guiaLote" minOccurs="0"/>
+			<element name="loteAnexos" type="ans:ct_anexoLote" minOccurs="0"/>
+			<element name="solicitacaoDemonstrativoRetorno" type="ans:ct_demonstrativoSolicitacao" minOccurs="0"/>
+			<element name="solicitacaoStatusProtocolo" type="ans:ct_protocoloSolicitacaoStatus" minOccurs="0"/>
+			<element name="solicitacaoProcedimento" type="ans:ctm_solicitacaoLote" minOccurs="0"/>
+			<element name="solicitaStatusAutorizacao" type="ans:ct_autorizacaoSolicitaStatus" minOccurs="0"/>
+			<element name="verificaElegibilidade" type="ans:ct_elegibilidadeVerifica" minOccurs="0"/>
+			<element name="cancelaGuia" type="ans:ct_guiaCancelamento" minOccurs="0"/>
+			<element name="comunicacaoInternacao" type="ans:ctm_beneficiarioComunicacao" minOccurs="0"/>
+			<element name="recursoGlosa" type="ans:ct_guiaRecursoLote" minOccurs="0"/>
+			<element name="solicitacaoStatusRecursoGlosa" type="ans:ct_protocoloSolicitacaoStatus" minOccurs="0"/>
+		</choice>
+	</complexType>
+	<complexType name="epilogo">
+		<sequence>
+			<element name="hash" type="string"/>
+		</sequence>
+	</complexType>
+</schema>

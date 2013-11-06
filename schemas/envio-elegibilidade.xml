@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<loteGuiasWS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cabecalho xmlns="http://www.ans.gov.br/padroes/tiss/schemas">
+    <identificacaoTransacao>
+      <tipoTransacao>ENVIO_LOTE_GUIAS</tipoTransacao>
+      <sequencialTransacao>123456</sequencialTransacao>
+      <dataRegistroTransacao>2013-11-05</dataRegistroTransacao>
+      <horaRegistroTransacao>08:20:38.3372221-02:00</horaRegistroTransacao>
+    </identificacaoTransacao>
+    <origem>
+      <registroANS>381</registroANS>
+    </origem>
+    <destino>
+      <registroANS>123456</registroANS>
+    </destino>
+    <versaoPadrao>3.00.01</versaoPadrao>
+    <loginSenhaPrestador>
+      <loginPrestador>login</loginPrestador>
+      <senhaPrestador>senha</senhaPrestador>
+    </loginSenhaPrestador>
+  </cabecalho>
+  <loteGuias xmlns="http://www.ans.gov.br/padroes/tiss/schemas">
+    <numeroLote>123456</numeroLote>
+    <guiasTISS>
+      <guiaSP-SADT>
+        <cabecalhoGuia>
+          <registroANS>123456</registroANS>
+          <numeroGuiaPrestador>1234567890</numeroGuiaPrestador>
+          <guiaPrincipal>1234567890</guiaPrincipal>
+        </cabecalhoGuia>
+        <dadosAutorizacao>
+          <numeroGuiaOperadora>1234567890</numeroGuiaOperadora>
+          <dataAutorizacao>2013-11-05</dataAutorizacao>
+          <senha>123456</senha>
+        </dadosAutorizacao>
+        <dadosBeneficiario>
+          <numeroCarteira>123456</numeroCarteira>
+          <atendimentoRN>N</atendimentoRN>
+          <nomeBeneficiario>Joseph Climber</nomeBeneficiario>
+          <numeroCNS>123465</numeroCNS>
+        </dadosBeneficiario>
+        <dadosSolicitante>
+          <contratadoSolicitante>
+            <codigoPrestadorNaOperadora>123456</codigoPrestadorNaOperadora>
+            <nomeContratado>Dr. João Canabrava</nomeContratado>
+          </contratadoSolicitante>
+        </dadosSolicitante>
+        <dadosSolicitacao>
+          <dataSolicitacao>2013-11-05</dataSolicitacao>
+          <caraterAtendimento>1</caraterAtendimento>
+          <indicacaoClinica>13456</indicacaoClinica>
+        </dadosSolicitacao>
+        <dadosExecutante>
+          <codigonaOperadora>123465</codigonaOperadora>
+          <nomeContratado>Dr. João Canabrava</nomeContratado>
+          <CNES>123465</CNES>
+        </dadosExecutante>
+        <dadosAtendimento>
+          <tipoAtendimento>01</tipoAtendimento>
+          <indicacaoAcidente>0</indicacaoAcidente>
+          <tipoConsulta>1</tipoConsulta>
+        </dadosAtendimento>
+        <procedimentosExecutados>
+          <procedimentoExecutado>
+            <dataExecucao>2013-11-05</dataExecucao>
+            <procedimento>
+              <codigoTabela>00</codigoTabela>
+              <codigoProcedimento>123456</codigoProcedimento>
+              <descricaoProcedimento>PROCEDIMENTO TESTE</descricaoProcedimento>
+            </procedimento>
+          </procedimentoExecutado>
+        </procedimentosExecutados>
+        <observacao>XML TESTE</observacao>
+        <valorTotal>
+          <valorDiarias>79228162514264337593543950335</valorDiarias>
+          <valorGasesMedicinais>-79228162514264337593543950335</valorGasesMedicinais>
+          <valorTotalGeral>0</valorTotalGeral>
+        </valorTotal>
+      </guiaSP-SADT>
+    </guiasTISS>
+  </loteGuias>
+</loteGuiasWS>
